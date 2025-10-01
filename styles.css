@@ -128,6 +128,7 @@ body {
 /* Presentation Container */
 .presentation-container {
     margin-top: 100px;
+    margin-bottom: 150px;
     min-height: calc(100vh - 100px);
     position: relative;
     overflow: hidden; /* Prevent extra scrolling */
@@ -188,20 +189,46 @@ body {
     display: flex;
     flex-direction: column;
     padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+/* Scroll indicator for mobile */
+.slide-content::after {
+    content: '';
+    position: fixed;
+    bottom: 80px;
+    right: 10px;
+    width: 4px;
+    height: 40px;
+    background: rgba(0,123,255,0.3);
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .slide-content.scrollable::after {
+        opacity: 1;
+    }
 }
 
 /* Mobile slide adjustments */
 @media (max-width: 768px) {
     .slide {
         padding: 2rem 1rem 1rem 1rem;
-        height: calc(100vh - 160px); /* Exact height to prevent overflow */
+        height: calc(100vh - 140px); /* מספיק גובה */
+        overflow: hidden;
     }
     
     .slide-content {
         height: 100%;
         overflow-y: auto;
+        overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
         padding-top: 3rem;
+        padding-bottom: 2rem;
     }
     
     .title-slide {
@@ -213,12 +240,19 @@ body {
 @media (max-width: 480px) {
     .slide {
         padding: 1.5rem 0.5rem 0.5rem 0.5rem;
-        height: calc(100vh - 180px);
+        height: calc(100vh - 160px);
+        overflow: hidden;
     }
     
     .slide-content {
         padding-top: 2rem;
+        padding-bottom: 2rem;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
     }
+    
     
     .title-slide {
         padding-top: 5rem;
@@ -228,7 +262,7 @@ body {
 
 /* Next button for end of content */
 .content-end-nav {
-    position: sticky;
+    /* position: sticky; */
     bottom: 0;
     left: 0;
     right: 0;
@@ -1040,17 +1074,37 @@ body {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-light);
     overflow: hidden;
+    position: relative;
+}
+
+/* Scroll indicator for mobile */
+.tab-content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(transparent, rgba(255,255,255,0.8));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tab-content.scrollable::after {
+    opacity: 1;
 }
 
 .example-tabs {
     display: flex;
     background: var(--light-bg);
     border-bottom: 1px solid rgba(0,0,0,0.1);
+    flex-wrap: wrap;
 }
 
 .tab-btn {
     flex: 1;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     border: none;
     background: transparent;
     cursor: pointer;
@@ -1058,6 +1112,8 @@ body {
     color: var(--text-light);
     transition: var(--transition);
     position: relative;
+    min-width: 0;
+    text-align: center;
 }
 
 .tab-btn.active {
@@ -1078,6 +1134,9 @@ body {
 .tab-content {
     display: none;
     padding: 2.5rem;
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .tab-content.active {
@@ -1100,6 +1159,16 @@ body {
     overflow-x: auto;
     font-family: 'Courier New', monospace;
     line-height: 1.6;
+    width: 100%;
+    max-width: 100%;
+    white-space: pre;
+    word-wrap: normal;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tab-content pre code {
+    white-space: pre;
+    word-wrap: normal;
 }
 
 /* Learning Path */
@@ -1655,15 +1724,20 @@ body {
 }
 
 .nav-dot {
-    width: 12px;
-    height: 12px;
+    width: 32px;
+    height: 32px;
     border: none;
     background: rgba(0,0,0,0.3);
-    border-radius: 50%;
+    border-radius: 8px;
     cursor: pointer;
     transition: var(--transition);
     position: relative;
-    font-size: 0;
+    font-size: 0.9rem;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Mobile navigation with numbers */
@@ -1712,12 +1786,12 @@ body {
 
 .nav-dot.active {
     background: var(--primary-color);
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 .nav-dot:hover {
     background: var(--accent-color);
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 /* Responsive Design */
@@ -1803,10 +1877,18 @@ body {
     
     .example-tabs {
         flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.8rem;
+        padding: 0.8rem;
     }
     
     .tab-btn {
+        flex: 1;
         min-width: 120px;
+        max-width: 150px;
+        padding: 1rem 0.8rem;
+        font-size: 0.9rem;
+        text-align: center;
     }
 }
 
@@ -2823,10 +2905,17 @@ body {
     /* Slide Layout */
     .slide {
         padding: 1rem;
+        height: calc(100vh - 120px);
+        overflow: hidden;
     }
     
     .slide-content {
         padding: 1rem;
+        padding-bottom: 2rem;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
     }
     
     /* Typography */
@@ -2948,32 +3037,51 @@ body {
     
     /* Example Tabs */
     .example-tabs {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        padding: 0.8rem 0.5rem 0.5rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
     }
     
     .tab-btn {
-        min-width: 90px;
-        padding: 0.7rem 0.8rem;
-        font-size: 0.85rem;
+        flex: none;
+        width: 100%;
+        min-width: unset;
+        padding: 1rem 0.8rem;
+        font-size: 0.9rem;
         white-space: nowrap;
+        text-align: center;
     }
     
     .tab-content {
         padding: 1.5rem;
+        max-height: 60vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
     }
     
     .tab-content h4 {
         font-size: 1.1rem;
+        margin-bottom: 1rem;
     }
     
     .tab-content pre {
-        font-size: 0.8rem;
-        padding: 1rem;
+        font-size: 0.85rem;
+        padding: 1.2rem;
         overflow-x: auto;
+        overflow-y: visible;
+        border-radius: 8px;
+        max-width: 100%;
+        white-space: pre;
+        -webkit-overflow-scrolling: touch;
+        max-height: none;
+    }
+    
+    .tab-content pre code {
+        white-space: pre;
+        word-wrap: normal;
     }
 }
 
@@ -3021,11 +3129,18 @@ body {
     .slide {
         padding: 2rem 0.5rem 0.5rem 0.5rem;
         min-height: calc(100vh - 160px);
+        height: calc(100vh - 160px);
+        overflow: hidden;
     }
     
     .slide-content {
         padding: 0.5rem;
         padding-top: 3rem;
+        padding-bottom: 2rem;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
     }
     
     .title-slide {
@@ -3287,11 +3402,19 @@ body {
     /* Ultra Mobile Optimization */
     .slide {
         padding: 1.5rem 0.3rem 0.3rem 0.3rem;
+        height: calc(100vh - 180px);
+        overflow: hidden;
     }
     
     .slide-content {
         padding: 0.3rem;
         padding-top: 2.5rem;
+        padding-bottom: 2rem;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
     }
     
     .title-slide {
@@ -3379,36 +3502,64 @@ body {
     }
     
     .example-tabs {
-        gap: 0.3rem;
-        margin-bottom: 0.8rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        padding: 0.8rem;
     }
     
     .tab-btn {
-        min-width: 80px;
-        padding: 0.6rem 0.7rem;
-        font-size: 0.8rem;
+        min-width: unset;
+        padding: 0.8rem 0.5rem;
+        font-size: 0.85rem;
+        text-align: center;
+        white-space: nowrap;
     }
     
     /* Example Boxes for Small Mobile */
     .example-box {
-        padding: 0.8rem;
-        margin: 0.5rem 0;
+        padding: 1rem;
+        margin: 0.8rem 0;
         border-left-width: 3px;
+        overflow: hidden;
     }
     
     .example-box h4 {
-        font-size: 0.9rem;
-        margin-bottom: 0.6rem;
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
     }
     
     .example-box pre {
-        padding: 0.8rem;
-        font-size: 0.7rem;
-        line-height: 1.3;
+        padding: 1rem;
+        font-size: 0.8rem;
+        line-height: 1.4;
         overflow-x: auto;
-        white-space: pre-wrap;
-        word-wrap: break-word;
+        white-space: pre;
+        word-wrap: normal;
         -webkit-overflow-scrolling: touch;
+        border-radius: 6px;
+        max-width: 100%;
+    }
+    
+    .tab-content pre {
+        font-size: 0.8rem;
+        padding: 1rem;
+        overflow-x: auto;
+        overflow-y: visible;
+        white-space: pre;
+        word-wrap: normal;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+        max-height: none;
+    }
+    
+    .tab-content {
+        max-height: 55vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        padding: 1rem;
     }
     
     /* Evolution Steps for Small Mobile */
@@ -3491,7 +3642,7 @@ body {
     .run-instructions code {
         font-size: 0.7rem;
     }
-}
+
 
 /* Tablet Landscape Optimization */
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
@@ -3641,6 +3792,7 @@ body {
 .mobile-device {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    margin-bottom: 90px;
 }
 
 .mobile-device .slide {
@@ -3695,5 +3847,40 @@ body {
     
     body {
         background: white !important;
+    }
+}
+
+/* מובייל קטן מאוד */
+@media (max-width: 320px) {
+    .example-tabs {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.8rem;
+    }
+    
+    .tab-btn {
+        flex: none;
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 0.9rem;
+        margin: 0.2rem 0;
+    }
+    
+    .tab-content pre {
+        font-size: 0.75rem;
+        padding: 0.8rem;
+        line-height: 1.3;
+        overflow-x: auto;
+        overflow-y: visible;
+        max-height: none;
+    }
+    
+    .tab-content {
+        max-height: 50vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        padding: 0.8rem;
     }
 }

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    console.log("אתר זה נוצר על ידי איתי חתואל");
     window.currentSlide = 1;
     let currentSlide = window.currentSlide;
     const totalSlides = 12;
@@ -135,6 +136,16 @@ $(document).ready(function() {
         // Add active class to clicked tab and corresponding content
         $(this).addClass('active');
         $(`#${tabId}`).addClass('active');
+        
+        // Check if content is scrollable and add indicator
+        setTimeout(() => {
+            const activeContent = $(`#${tabId}`);
+            if (activeContent[0] && activeContent[0].scrollHeight > activeContent[0].clientHeight) {
+                activeContent.addClass('scrollable');
+            } else {
+                activeContent.removeClass('scrollable');
+            }
+        }, 100);
     });
     
     // Desktop animations
@@ -497,5 +508,51 @@ function goToSlide(slideNum) {
         // Update navigation buttons
         $('#prevBtn').prop('disabled', slideNum === 1);
         $('#nextBtn').prop('disabled', slideNum === totalSlides);
+        
+        // Check tab content scrollability on slide change
+        setTimeout(() => {
+            $('.tab-content.active').each(function() {
+                if (this.scrollHeight > this.clientHeight) {
+                    $(this).addClass('scrollable');
+                } else {
+                    $(this).removeClass('scrollable');
+                }
+            });
+            
+            // Check slide content scrollability on mobile
+            if ($(window).width() <= 768) {
+                $('.slide.active .slide-content').each(function() {
+                    if (this.scrollHeight > this.clientHeight) {
+                        $(this).addClass('scrollable');
+                    } else {
+                        $(this).removeClass('scrollable');
+                    }
+                });
+            }
+        }, 100);
     }
+    
+    // Initialize scrollability check on page load
+    $(document).ready(function() {
+        setTimeout(() => {
+            $('.tab-content.active').each(function() {
+                if (this.scrollHeight > this.clientHeight) {
+                    $(this).addClass('scrollable');
+                } else {
+                    $(this).removeClass('scrollable');
+                }
+            });
+            
+            // Check slide content scrollability on mobile
+            if ($(window).width() <= 768) {
+                $('.slide.active .slide-content').each(function() {
+                    if (this.scrollHeight > this.clientHeight) {
+                        $(this).addClass('scrollable');
+                    } else {
+                        $(this).removeClass('scrollable');
+                    }
+                });
+            }
+        }, 500);
+    });
 }
